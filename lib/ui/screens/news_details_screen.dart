@@ -1,67 +1,93 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:webant_flutter_study_jam_2023/bloc/news_details/news_details_bloc.dart';
 
-class NewsDetailsScreen extends StatelessWidget {
+class NewsDetailsScreen extends StatefulWidget {
   const NewsDetailsScreen({super.key});
+
+  @override
+  State<NewsDetailsScreen> createState() => _NewsDetailsScreenState();
+}
+
+class _NewsDetailsScreenState extends State<NewsDetailsScreen> {
+  @override
+  void initState() {
+    super.initState();
+    context.read<NewsDetailsBloc>().add(LoadNewsById(id: 1));
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Информация о новости'),
+        title: const Text('Информация'),
       ),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.fromLTRB(24, 0, 24, 50),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(top: 16),
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15),
+          child: BlocBuilder<NewsDetailsBloc, NewsDetailsState>(
+            builder: (context, state) {
+              return switch (state) {
+                final NewsDetailsInitialState _ => const Center(
+                    child: CircularProgressIndicator(),
                   ),
-                  child: Container(
-                    height: 235,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(15),
-                      image: const DecorationImage(
-                        fit: BoxFit.fill,
-                        image: NetworkImage(
-                          'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/Good_Food_Display_-_NCI_Visuals_Online.jpg/800px-Good_Food_Display_-_NCI_Visuals_Online.jpg',
+                final NewsDetailsLoadingState _ => const Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                final NewsDetailsSuccessState state => Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(top: 16),
+                        child: Container(
+                          child: state.news.imageUrl != null
+                              ? Container(
+                                  height: 235,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(15),
+                                    image: DecorationImage(
+                                      fit: BoxFit.fill,
+                                      image: NetworkImage(
+                                        state.news.imageUrl!,
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              : null,
                         ),
                       ),
-                    ),
-                  ),
-                ),
-              ),
-              const Padding(
-                padding: EdgeInsets.only(top: 16),
-                child: Text('Название новости, Lorem ipsum dolor sit amet, consectetur'),
-              ),
-              const Divider(),
-              const Text(
-                  'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut laboLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim icat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim icat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim icat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim icat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim icat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'),
-              Padding(
-                padding: const EdgeInsets.only(top: 19),
-                child: MaterialButton(
-                  onPressed: () {},
-                  elevation: 1,
-                  color: Colors.white,
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      SvgPicture.asset(
-                        'assets/icons/Icon.svg',
+                      Padding(
+                        padding: const EdgeInsets.only(top: 16),
+                        child: Text(state.news.title),
                       ),
-                      const Text('Перейти в профиль'),
+                      const Divider(),
+                      Text(state.news.description),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 19),
+                        child: MaterialButton(
+                          onPressed: () {},
+                          elevation: 1,
+                          color: Colors.white,
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              SvgPicture.asset(
+                                'assets/icons/Icon.svg',
+                              ),
+                              const Text('Перейти в источник'),
+                            ],
+                          ),
+                        ),
+                      ),
                     ],
                   ),
-                ),
-              ),
-            ],
+                final NewsDetailsFailureState _ => const Center(
+                    child: CircularProgressIndicator(),
+                  ),
+              };
+            },
           ),
         ),
       ),
