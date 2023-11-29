@@ -14,6 +14,9 @@ class NewsBloc extends Bloc<NewsEvent, NewsState> {
         News(
           title: 'Название новости, Lorem ipsum dolor sit amet, consectetur',
           description: 'Lorem ipsum dolor sit amet, consectetur Lorem ipsum dolor sit amet, consectetur',
+          imageUrl:
+              'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/Good_Food_Display_-_NCI_Visuals_Online.jpg/800px-Good_Food_Display_-_NCI_Visuals_Online.jpg',
+          sourceUrl: 'google.com',
         )
       ];
 
