@@ -56,7 +56,7 @@ class NewsDetailsScreen extends StatelessWidget {
                       SvgPicture.asset(
                         'assets/icons/Icon.svg',
                       ),
-                      const Text('Перейти в профиль'),
+                      const Text('Перейти в источник'),
                     ],
                   ),
                 ),
