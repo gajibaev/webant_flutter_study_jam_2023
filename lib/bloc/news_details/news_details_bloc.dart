@@ -8,11 +8,11 @@ part 'news_details_state.dart';
 
 class NewsDetailsBloc extends Bloc<NewsDetailsEvent, NewsDetailsState> {
   NewsDetailsBloc() : super(NewsDetailsInitialState()) {
-    on<NewsDetailsEvent>(_onNewsDetailsEvent);
+    on<LoadNewsById>(_onNewsDetailsEvent);
   }
 
   Future<void> _onNewsDetailsEvent(
-    NewsDetailsEvent event,
+    LoadNewsById event,
     Emitter<NewsDetailsState> emit,
   ) async {
     emit(NewsDetailsLoadingState());
