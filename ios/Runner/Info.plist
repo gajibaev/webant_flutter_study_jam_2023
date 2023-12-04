@@ -14,6 +14,11 @@
 	<string>6.0</string>
 	<key>CFBundleName</key>
 	<string>webant_flutter_study_jam_2023</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+	<string>sms</string>
+	<string>tel</string>
+	</array>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
