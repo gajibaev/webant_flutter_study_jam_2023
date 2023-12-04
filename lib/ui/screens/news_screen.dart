@@ -39,40 +39,45 @@ class _NewsScreenState extends State<NewsScreen> {
                   itemBuilder: (context, index) {
                     final news = state.news[index];
 
-                    return ListTile(
-                      minVerticalPadding: 0,
-                      contentPadding: const EdgeInsets.symmetric(horizontal: 28),
-                      leading: news.imageUrl != null
-                          ? Container(
-                              width: 55,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(15),
-                                image: DecorationImage(
-                                  fit: BoxFit.fill,
-                                  image: NetworkImage(
-                                    news.imageUrl!,
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 10),
+                      child: ListTile(
+                        minVerticalPadding: 0,
+                        contentPadding: const EdgeInsets.symmetric(horizontal: 28),
+                        leading: news.imageUrl != null
+                            ? Container(
+                                width: 55,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(15),
+                                  image: DecorationImage(
+                                    fit: BoxFit.fill,
+                                    image: NetworkImage(
+                                      news.imageUrl!,
+                                    ),
                                   ),
                                 ),
+                              )
+                            : null,
+                        title: Text(
+                          news.title,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        subtitle: Text(
+                          news.description,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        onTap: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => NewsDetailsScreen(
+                                id: news.id,
                               ),
-                            )
-                          : null,
-                      title: Text(
-                        news.title,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
+                            ),
+                          );
+                        },
                       ),
-                      subtitle: Text(
-                        news.description,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      onTap: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => const NewsDetailsScreen(),
-                          ),
-                        );
-                      },
                     );
                   },
                 ),

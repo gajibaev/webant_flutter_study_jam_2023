@@ -8,3 +8,11 @@ class LoadNewsById extends NewsDetailsEvent {
 
   LoadNewsById({required this.id});
 }
+
+class OpenNewsSourceLink extends NewsDetailsEvent {
+  final String link;
+
+  OpenNewsSourceLink({
+    required this.link,
+  });
+}

@@ -4,7 +4,12 @@ import 'package:flutter_svg/svg.dart';
 import 'package:webant_flutter_study_jam_2023/bloc/news_details/news_details_bloc.dart';
 
 class NewsDetailsScreen extends StatefulWidget {
-  const NewsDetailsScreen({super.key});
+  const NewsDetailsScreen({
+    super.key,
+    required this.id,
+  });
+
+  final int id;
 
   @override
   State<NewsDetailsScreen> createState() => _NewsDetailsScreenState();
@@ -14,7 +19,9 @@ class _NewsDetailsScreenState extends State<NewsDetailsScreen> {
   @override
   void initState() {
     super.initState();
-    context.read<NewsDetailsBloc>().add(LoadNewsById(id: 1));
+    context.read<NewsDetailsBloc>().add(LoadNewsById(
+          id: widget.id,
+        ));
   }
 
   @override
@@ -66,7 +73,15 @@ class _NewsDetailsScreenState extends State<NewsDetailsScreen> {
                       Padding(
                         padding: const EdgeInsets.only(top: 19),
                         child: MaterialButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            final link = state.news.sourceUrl;
+
+                            if (link != null) {
+                              context.read<NewsDetailsBloc>().add(
+                                    OpenNewsSourceLink(link: link),
+                                  );
+                            }
+                          },
                           elevation: 1,
                           color: Colors.white,
                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),

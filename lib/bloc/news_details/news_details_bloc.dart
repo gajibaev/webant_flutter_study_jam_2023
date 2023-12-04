@@ -1,29 +1,46 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'package:webant_flutter_study_jam_2023/models/news.dart';
+import 'package:webant_flutter_study_jam_2023/services/news_service.dart';
 
 part 'news_details_event.dart';
 part 'news_details_state.dart';
 
 class NewsDetailsBloc extends Bloc<NewsDetailsEvent, NewsDetailsState> {
-  NewsDetailsBloc() : super(NewsDetailsInitialState()) {
-    on<NewsDetailsEvent>(_onNewsDetailsEvent);
+  NewsDetailsBloc({
+    required this.newsService,
+  }) : super(NewsDetailsInitialState()) {
+    on<LoadNewsById>(_onNewsDetailsEvent);
+    on<OpenNewsSourceLink>(_onOpenSourceSiteLink);
   }
 
+  final NewsService newsService;
+
   Future<void> _onNewsDetailsEvent(
-    NewsDetailsEvent event,
+    LoadNewsById event,
     Emitter<NewsDetailsState> emit,
   ) async {
     emit(NewsDetailsLoadingState());
 
-    final news = News(
-      title: 'title',
-      description: 'лыв',
-      imageUrl:
-          'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/Good_Food_Display_-_NCI_Visuals_Online.jpg/800px-Good_Food_Display_-_NCI_Visuals_Online.jpg',
-    );
+    final newsResponse = await newsService.fetchArticleById(event.id);
 
-    emit(NewsDetailsSuccessState(news: news));
+    final news = newsResponse.toNewsModel();
+
+    emit(
+      NewsDetailsSuccessState(news: news),
+    );
+  }
+
+  Future<void> _onOpenSourceSiteLink(
+    OpenNewsSourceLink event,
+    Emitter<NewsDetailsState> emit,
+  ) async {
+    final uri = Uri.tryParse(event.link);
+
+    if (uri != null && uri.isAbsolute) {
+      await launchUrl(uri);
+    }
   }
 }
