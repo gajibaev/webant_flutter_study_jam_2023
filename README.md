@@ -1,8 +1,8 @@
 # WebAnt Flutter Study Jam 2023
 
 
-Презентация:
-https://docs.google.com/presentation/d/1pRjsMNIY5qttQOuJUOs-alQWbs8q8gihYz_FvwS2YZk/edit#slide=id.g2a378b5c25e_0_399
+[Презентация:]
+(https://docs.google.com/presentation/d/1pRjsMNIY5qttQOuJUOs-alQWbs8q8gihYz_FvwS2YZk/edit#slide=id.g2a378b5c25e_0_399)
 ---
 
 Полезные ссылки по проекту.
